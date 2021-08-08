@@ -4,7 +4,7 @@ buildscript {
     ext.version_kotlin = '1.4.32'
     ext.version_detekt = '1.15.0'
     ext.version_hilt = '2.33-beta'
-    ext.version_navigation = '2.3.3'
+    ext.version_navigation = '2.3.5'
     ext.version_google_services = '4.3.5'
     ext.version_firebase_crashlytics = '2.0.0'
 
