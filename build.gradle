@@ -55,7 +55,7 @@ allprojects {
     ext.version_viewpager2 = '1.0.0'
     ext.version_lifecycle = '2.3.0'
     ext.version_navigation = '2.3.3'
-    ext.version_room = '2.3.0-beta02'
+    ext.version_room = '2.3.0-rc01'
 
     // Firebase
     ext.version_firebase_analytics = '18.0.2'
