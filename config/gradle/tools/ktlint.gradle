@@ -3,7 +3,7 @@ android {
         ktlint
     }
     dependencies {
-        ktlint "com.pinterest:ktlint:$version_ktlint"
+        ktlint "com.pinterest:ktlint:$versions.ktlint"
     }
 }
 

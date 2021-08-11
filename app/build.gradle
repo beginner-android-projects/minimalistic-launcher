@@ -9,13 +9,13 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply from: "${project.rootDir}/config/gradle/moduleTasks.gradle"
 
 android {
-    compileSdkVersion version_compile_sdk
+    compileSdkVersion sdk.compile
     defaultConfig {
         applicationId "com.ranhaveshush.launcher.minimalistic"
-        minSdkVersion version_min_sdk
-        targetSdkVersion version_target_sdk
-        versionCode version_code
-        versionName version_name
+        minSdkVersion sdk.min
+        targetSdkVersion sdk.target
+        versionCode proj.version_code
+        versionName proj.version_name
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -28,51 +28,51 @@ android {
         dataBinding true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${version_kotlin}"
-    implementation "androidx.core:core-ktx:${version_core_ktx}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:${versions.kotlin}"
+    implementation "androidx.core:core-ktx:${versions.core_ktx}"
     // DI
-    implementation "com.google.dagger:hilt-android:${version_hilt}"
-    kapt "com.google.dagger:hilt-android-compiler:${version_hilt}"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${version_hilt_lifecycle_viewmodel}"
-    kapt "androidx.hilt:hilt-compiler:${version_hilt_lifecycle_viewmodel}"
+    implementation "com.google.dagger:hilt-android:${versions.dagger_hilt}"
+    kapt "com.google.dagger:hilt-android-compiler:${versions.dagger_hilt}"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:${versions.hilt_lifecycle_viewmodel}"
+    kapt "androidx.hilt:hilt-compiler:${versions.hilt_compiler}"
     // Legacy
-    implementation "androidx.legacy:legacy-support-v4:${version_legacy}"
+    implementation "androidx.legacy:legacy-support-v4:${versions.legacy}"
     // UI
-    implementation "androidx.appcompat:appcompat:${version_appcompat}"
-    implementation "androidx.constraintlayout:constraintlayout:${version_constraintlayout}"
-    implementation "androidx.viewpager2:viewpager2:${version_viewpager2}"
+    implementation "androidx.appcompat:appcompat:${versions.appcompat}"
+    implementation "androidx.constraintlayout:constraintlayout:${versions.constraintlayout}"
+    implementation "androidx.viewpager2:viewpager2:${versions.viewpager2}"
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${version_lifecycle}"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${version_lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${versions.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:${versions.lifecycle}"
     // Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:${version_navigation}"
-    implementation "androidx.navigation:navigation-ui-ktx:${version_navigation}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${versions.navigation}"
+    implementation "androidx.navigation:navigation-ui-ktx:${versions.navigation}"
     // Room
-    implementation "androidx.room:room-runtime:${version_room}"
-    kapt "androidx.room:room-compiler:${version_room}"
-    implementation "androidx.room:room-ktx:${version_room}"
+    implementation "androidx.room:room-runtime:${versions.room}"
+    kapt "androidx.room:room-compiler:${versions.room}"
+    implementation "androidx.room:room-ktx:${versions.room}"
     // Firebase
-    implementation "com.google.firebase:firebase-analytics:${version_firebase_analytics}"
-    implementation "com.google.firebase:firebase-crashlytics:${version_firebase_crashlytics}"
+    implementation "com.google.firebase:firebase-analytics:${versions.firebase_analytics}"
+    implementation "com.google.firebase:firebase-crashlytics:${versions.firebase_crashlytics}"
     // Retrofit
-    implementation "com.squareup.retrofit2:retrofit:${version_retrofit}"
-    implementation "com.squareup.retrofit2:converter-moshi:${version_retrofit}"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${version_retrofit_call_adapter}"
-    implementation "com.squareup.okhttp3:logging-interceptor:${version_logging_interceptor}"
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-moshi:${versions.retrofit}"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:${versions.retrofit_call_adapter}"
+    implementation "com.squareup.okhttp3:logging-interceptor:${versions.logging_interceptor}"
     // Test
-    testImplementation "junit:junit:${version_junit}"
-    androidTestImplementation "androidx.test.ext:junit-ktx:${version_ext_junit}"
-    androidTestImplementation "androidx.test:runner:${version_runner}"
-    androidTestImplementation "androidx.test.espresso:espresso-core:${version_espresso_core}"
+    testImplementation "junit:junit:${versions.junit}"
+    androidTestImplementation "androidx.test.ext:junit-ktx:${versions.ext_junit}"
+    androidTestImplementation "androidx.test:runner:${versions.runner}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${versions.espresso_core}"
 }

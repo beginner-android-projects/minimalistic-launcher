@@ -12,9 +12,12 @@ import com.ranhaveshush.launcher.minimalistic.launcher.SettingsLauncher
 import com.ranhaveshush.launcher.minimalistic.repository.HomeRepository
 import com.ranhaveshush.launcher.minimalistic.vo.HomeApp
 import com.ranhaveshush.launcher.minimalistic.vo.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import javax.inject.Inject
 
-class HomeViewModel @ViewModelInject constructor(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
     private val repository: HomeRepository,
     private val appsLauncher: AppsLauncher,
     private val settingsLauncher: SettingsLauncher

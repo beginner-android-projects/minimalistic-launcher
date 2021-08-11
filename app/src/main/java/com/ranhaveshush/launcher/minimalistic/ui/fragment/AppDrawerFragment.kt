@@ -34,7 +34,7 @@ class AppDrawerFragment : Fragment(R.layout.fragment_app_drawer), DrawerAppItemC
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         val binding = FragmentAppDrawerBinding.inflate(layoutInflater)
 
         binding.lifecycleOwner = viewLifecycleOwner

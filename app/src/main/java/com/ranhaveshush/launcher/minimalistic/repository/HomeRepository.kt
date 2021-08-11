@@ -16,7 +16,7 @@ class HomeRepository @Inject constructor(
     private val dataTransformer: HomeAppTransformer
 ) {
     fun listApps(): Flow<Resource<List<HomeApp>>> = dataSource.asFlow().map { resolveInfos ->
-        val appNamesFilter = Regex("(dialer|contacts|calendar|maps|photos|camera|chrome|youtube)")
+        val appNamesFilter = Regex("(chrome|dialer|calendar|maps|photos|camera)")
 
         val systemApps = resolveInfos.filter { resolveInfo ->
             val applicationInfo = resolveInfo.activityInfo.applicationInfo
@@ -29,7 +29,11 @@ class HomeRepository @Inject constructor(
             dataTransformer.transform(resolveInfo)
         }
 
-        val filteredApps = apps.subList(0, MAX_APPS)
+        val filteredApps = if (apps.size > MAX_APPS) {
+            apps.subList(0, MAX_APPS)
+        } else {
+            apps
+        }
 
         val sortedApps = filteredApps.sortedBy { app ->
             app.name

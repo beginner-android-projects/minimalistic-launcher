@@ -4,7 +4,7 @@ task runConnectedAndroidTest(type: Exec) {
 
     final projectDir = "$rootProject.projectDir"
     final moduleName = "$project.name"
-    final moduleVersion = "$project.version_name"
+    final moduleVersion = proj.version_name
 
     workingDir "$projectDir"
 

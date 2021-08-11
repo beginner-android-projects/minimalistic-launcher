@@ -1,74 +1,25 @@
 buildscript {
-    // Build script plugins
-    ext.version_android_gradle = '7.0.0'
-    ext.version_kotlin = '1.5.21'
-    ext.version_detekt = '1.17.1'
-    ext.version_hilt = '2.38.1'
-    ext.version_navigation = '2.3.5'
-    ext.version_google_services = '4.3.9'
-    ext.version_firebase_crashlytics = '2.0.0'
-
+    apply from: "$rootDir/config/gradle/versions.gradle"
     repositories {
         google()
-        jcenter()
-        maven { url "https://plugins.gradle.org/m2/" }
+        mavenCentral()
     }
     dependencies {
-        classpath "com.android.tools.build:gradle:${version_android_gradle}"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${version_kotlin}"
-        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${version_detekt}"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:${version_hilt}"
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${version_navigation}"
-        classpath "com.google.gms:google-services:${version_google_services}"
-        classpath "com.google.firebase:firebase-crashlytics-gradle:${version_firebase_crashlytics}"
+        classpath "com.android.tools.build:gradle:${versions.android_gradle}"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:${versions.detekt}"
+        classpath "com.google.dagger:hilt-android-gradle-plugin:${versions.dagger_hilt}"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:${versions.navigation}"
+        classpath "com.google.gms:google-services:${versions.google_services}"
+        classpath "com.google.firebase:firebase-crashlytics-gradle:${versions.firebase_crashlytics_gradle}"
     }
 }
 
 allprojects {
-    // Project
-    ext.version_code = 1
-    ext.version_name = "1.0.0"
-
-    // Android SDK
-    ext.version_min_sdk = 21
-    ext.version_target_sdk = 30
-    ext.version_compile_sdk = 30
-
-    // DI
-    ext.version_hilt_lifecycle_viewmodel = '1.0.0-alpha03'
-
-    // Test
-    ext.version_ext_junit = '1.1.3'
-    ext.version_junit = '4.13.2'
-    ext.version_runner = '1.4.0'
-    ext.version_espresso_core = '3.4.0'
-
-    // Kotlin
-    ext.version_ktlint = '0.32.0'
-    ext.version_core_ktx = '1.7.0-alpha01'
-    ext.version_kotlinx_coroutines = '1.2.1'
-
-    // AndroidX
-    ext.version_legacy = '1.0.0'
-    ext.version_appcompat = '1.4.0-alpha03'
-    ext.version_constraintlayout = '2.1.0'
-    ext.version_viewpager2 = '1.0.0'
-    ext.version_lifecycle = '2.3.1'
-    ext.version_navigation = '2.3.3'
-    ext.version_room = '2.4.0-alpha04'
-
-    // Firebase
-    ext.version_firebase_analytics = '19.0.0'
-    ext.version_firebase_crashlytics = '17.3.1'
-
-    // Retrofit
-    ext.version_retrofit = '2.9.0'
-    ext.version_retrofit_call_adapter = '0.9.2'
-    ext.version_logging_interceptor = '3.12.10' // Latest version to support API level < 24.
-
+    apply from: "$rootDir/config/gradle/versions.gradle"
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 

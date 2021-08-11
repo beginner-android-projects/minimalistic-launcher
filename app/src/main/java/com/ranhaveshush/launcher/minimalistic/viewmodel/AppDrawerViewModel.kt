@@ -16,10 +16,13 @@ import com.ranhaveshush.launcher.minimalistic.ui.item.DrawerAppItem
 import com.ranhaveshush.launcher.minimalistic.vo.DrawerApp
 import com.ranhaveshush.launcher.minimalistic.vo.DrawerAppHeader
 import com.ranhaveshush.launcher.minimalistic.vo.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class AppDrawerViewModel @ViewModelInject constructor(
+@HiltViewModel
+class AppDrawerViewModel @Inject constructor(
     private val repository: AppDrawerRepository,
     private val appsLauncher: AppsLauncher,
     private val settingsLauncher: SettingsLauncher

@@ -30,8 +30,8 @@ class NotificationService : NotificationListenerService() {
         if (this::serviceScope.isInitialized) {
             serviceScope.launch {
                 dataSource.clear()
+                this.cancel()
             }
-            serviceScope.cancel()
         }
     }
 
@@ -40,7 +40,7 @@ class NotificationService : NotificationListenerService() {
             if (shouldInclude(sbn)) {
                 serviceScope.launch {
                     dataSource.add(sbn)
-//                    cancelNotification(sbn.key)
+                    cancelNotification(sbn.key)
                 }
             }
         }

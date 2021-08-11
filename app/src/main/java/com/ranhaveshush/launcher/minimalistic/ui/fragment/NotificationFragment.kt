@@ -32,7 +32,7 @@ class NotificationFragment : Fragment(R.layout.fragment_notifications), Notifica
 
     private val notificationsAdapter = NotificationsAdapter(this, this)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val binding = FragmentNotificationsBinding.inflate(inflater)
 
         binding.lifecycleOwner = viewLifecycleOwner
