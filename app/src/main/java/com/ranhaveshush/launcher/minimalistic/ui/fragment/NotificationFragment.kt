@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.ranhaveshush.launcher.minimalistic.R
 import com.ranhaveshush.launcher.minimalistic.databinding.FragmentNotificationsBinding
+import com.ranhaveshush.launcher.minimalistic.ktx.launchRepeatOnStarted
 import com.ranhaveshush.launcher.minimalistic.ui.adapter.NotificationsAdapter
 import com.ranhaveshush.launcher.minimalistic.ui.listener.ClearAllNotificationsClickListener
 import com.ranhaveshush.launcher.minimalistic.ui.listener.NotificationItemClickListener
@@ -23,11 +24,13 @@ import com.ranhaveshush.launcher.minimalistic.viewmodel.NotificationViewModel
 import com.ranhaveshush.launcher.minimalistic.vo.Notification
 import com.ranhaveshush.launcher.minimalistic.vo.Resource
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
-class NotificationFragment : Fragment(R.layout.fragment_notifications), NotificationItemClickListener,
-    OnSwipedItemListener,
-    ClearAllNotificationsClickListener {
+class NotificationFragment : Fragment(R.layout.fragment_notifications),
+                             NotificationItemClickListener,
+                             OnSwipedItemListener,
+                             ClearAllNotificationsClickListener {
     private val viewModel: NotificationViewModel by viewModels()
 
     private val notificationsAdapter = NotificationsAdapter(this, this)
@@ -54,12 +57,14 @@ class NotificationFragment : Fragment(R.layout.fragment_notifications), Notifica
     override fun onResume() {
         super.onResume()
 
-        viewModel.notifications.observe(viewLifecycleOwner, {
-            if (it.state.status == Resource.Status.SUCCESS) {
-                val newList = it.data?.toList()
-                notificationsAdapter.submitList(newList)
+        launchRepeatOnStarted {
+            viewModel.notifications.collect { resource ->
+                if (resource.state.status == Resource.Status.SUCCESS) {
+                    val newList = resource.data?.toList()
+                    notificationsAdapter.submitList(newList)
+                }
             }
-        })
+        }
     }
 
     override fun onNotificationClick(notification: Notification) = viewModel.launch(notification)
@@ -85,13 +90,10 @@ class NotificationFragment : Fragment(R.layout.fragment_notifications), Notifica
             notificationManager.createNotificationChannel(notificationChannel)
         }
 
-        val notification = NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle("Content title.")
-                .setContentText("Content text.")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setWhen(System.currentTimeMillis())
-                .build()
+        val notification =
+            NotificationCompat.Builder(context, channelId).setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setContentTitle("Content title.").setContentText("Content text.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT).setWhen(System.currentTimeMillis()).build()
 
         notificationManager.notify(0, notification)
     }

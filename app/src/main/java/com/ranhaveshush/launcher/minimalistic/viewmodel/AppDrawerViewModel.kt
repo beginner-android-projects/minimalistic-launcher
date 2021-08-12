@@ -2,13 +2,9 @@ package com.ranhaveshush.launcher.minimalistic.viewmodel
 
 import android.app.Application
 import android.content.ComponentName
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.liveData
-import androidx.lifecycle.switchMap
+import androidx.lifecycle.viewModelScope
 import com.ranhaveshush.launcher.minimalistic.launcher.AppsLauncher
 import com.ranhaveshush.launcher.minimalistic.launcher.SettingsLauncher
 import com.ranhaveshush.launcher.minimalistic.repository.AppDrawerRepository
@@ -17,8 +13,12 @@ import com.ranhaveshush.launcher.minimalistic.vo.DrawerApp
 import com.ranhaveshush.launcher.minimalistic.vo.DrawerAppHeader
 import com.ranhaveshush.launcher.minimalistic.vo.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,11 +27,15 @@ class AppDrawerViewModel @Inject constructor(
     private val appsLauncher: AppsLauncher,
     private val settingsLauncher: SettingsLauncher
 ) : ViewModel() {
-    val searchQuery = MutableLiveData<String>()
+    val searchQuery = MutableStateFlow("")
 
-    val apps: LiveData<Resource<List<DrawerAppItem>>> = searchQuery.switchMap {
-        listApps(it)
-    }
+    val apps: StateFlow<Resource<List<DrawerAppItem>>> = searchQuery.flatMapLatest { searchQuery ->
+        listApps(searchQuery)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        Resource.loading()
+    )
 
     init {
         clearSearchQuery()
@@ -50,8 +54,8 @@ class AppDrawerViewModel @Inject constructor(
         return settingsLauncher.launchAppDetails(context, app.packageName)
     }
 
-    private fun listApps(searchQuery: String): LiveData<Resource<List<DrawerAppItem>>> = liveData {
-        val resource = repository.listApps(searchQuery).map { resource ->
+    private fun listApps(searchQuery: String): StateFlow<Resource<List<DrawerAppItem>>> =
+        repository.listApps(searchQuery).map { resource ->
             val apps = resource.data
 
             if (apps == null) {
@@ -70,8 +74,7 @@ class AppDrawerViewModel @Inject constructor(
                 }
                 Resource.success(drawerAppItems as List<DrawerAppItem>)
             }
-        }.asLiveData(Dispatchers.Default)
-
-        emitSource(resource)
-    }
+        }.stateIn(
+            viewModelScope, SharingStarted.WhileSubscribed(5000), Resource.loading()
+        )
 }

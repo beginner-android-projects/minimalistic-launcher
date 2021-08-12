@@ -1,8 +1,6 @@
 package com.ranhaveshush.launcher.minimalistic.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.ranhaveshush.launcher.minimalistic.launcher.NotificationsLauncher
 import com.ranhaveshush.launcher.minimalistic.repository.NotificationRepository
@@ -11,8 +9,10 @@ import com.ranhaveshush.launcher.minimalistic.vo.Notification
 import com.ranhaveshush.launcher.minimalistic.vo.NotificationHeader
 import com.ranhaveshush.launcher.minimalistic.vo.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class NotificationViewModel @Inject constructor(
     private val repository: NotificationRepository,
     private val notificationsLauncher: NotificationsLauncher
 ) : ViewModel(), NotificationsLauncher {
-    val notifications: LiveData<Resource<List<NotificationItem>>> = repository.getAllNotifications().map { resource ->
+    val notifications: StateFlow<Resource<List<NotificationItem>>> = repository.getAllNotifications().map { resource ->
         if (resource.data == null) {
             Resource.empty()
         } else {
@@ -33,7 +33,11 @@ class NotificationViewModel @Inject constructor(
             }
             Resource.success<List<NotificationItem>>(notificationItems)
         }
-    }.asLiveData(Dispatchers.Default)
+    }.stateIn(
+        viewModelScope,
+        SharingStarted.WhileSubscribed(5000),
+        Resource.loading()
+    )
 
     override fun launch(notification: Notification) {
         notificationsLauncher.launch(notification)

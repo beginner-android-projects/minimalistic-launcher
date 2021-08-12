@@ -1,5 +1,6 @@
 package com.ranhaveshush.launcher.minimalistic.repository
 
+import android.util.Log
 import com.ranhaveshush.launcher.minimalistic.data.app.DrawerAppTransformer
 import com.ranhaveshush.launcher.minimalistic.data.app.InstalledAppsDataSource
 import com.ranhaveshush.launcher.minimalistic.vo.DrawerApp
